@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SoundWave - Music Player | Ashwani Rathore (CodeAlpha Task 4)</title>
+  <meta name="description" content="A feature-rich, glassmorphic Web Music Player built with HTML, CSS, and JavaScript featuring audio controls, interactive progress bar, volume slider, playlist drawer, Web Audio visualizer, playback speed, and custom MP3 upload support.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Animated Background Globes -->
+  <div class="bg-globes">
+    <div class="globe globe-1" id="globe1"></div>
+    <div class="globe globe-2" id="globe2"></div>
+    <div class="globe globe-3" id="globe3"></div>
+  </div>
+
+  <main class="app-container">
+    <!-- Main Music Player Card -->
+    <div class="player-card glass-card">
+      <!-- Player Header -->
+      <header class="player-header">
+        <div class="app-logo">
+          <i class="fa-solid fa-compact-disc logo-spin"></i>
+          <span>SoundWave</span>
+        </div>
+        <div class="header-actions">
+          <label for="customAudioInput" class="upload-btn" title="Upload Custom MP3 Songs">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+            <span>Add Songs</span>
+          </label>
+          <input type="file" id="customAudioInput" accept="audio/*" multiple style="display: none;">
+          
+          <button id="playlistToggleBtn" class="icon-btn" title="Toggle Playlist Drawer">
+            <i class="fa-solid fa-list-ul"></i>
+            <span class="playlist-badge" id="playlistBadgeCount">0</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Track Information & Vinyl Art -->
+      <section class="track-display-section">
+        <div class="album-art-wrapper" id="albumArtWrapper">
+          <div class="vinyl-record" id="vinylRecord">
+            <div class="vinyl-grooves"></div>
+            <div class="vinyl-center-label" id="vinylLabel">
+              <i class="fa-solid fa-music"></i>
+            </div>
+          </div>
+          <img src="" alt="Album Cover Art" class="album-cover" id="albumCoverImg">
+          
+          <!-- Audio Visualizer Canvas -->
+          <canvas id="visualizerCanvas" class="visualizer-canvas" width="220" height="220"></canvas>
+
+          <!-- Equalizer Bar Overlay -->
+          <div class="equalizer-container" id="equalizerVisualizer">
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+            <span class="eq-bar"></span>
+          </div>
+        </div>
+
+        <div class="track-details">
+          <div class="track-title-row">
+            <h2 class="track-title" id="trackTitle">Loading Music...</h2>
+            <button id="likeBtn" class="like-btn" title="Favorite Song">
+              <i class="fa-regular fa-heart" id="likeIcon"></i>
+            </button>
+          </div>
+          <h3 class="track-artist" id="trackArtist">Please Wait</h3>
+          
+          <div class="badges-row">
+            <span class="track-genre-badge" id="trackGenre">Synthwave</span>
+            <select id="speedSelect" class="speed-select" title="Playback Speed">
+              <option value="0.5">0.5x</option>
+              <option value="0.75">0.75x</option>
+              <option value="1" selected>1.0x (Normal)</option>
+              <option value="1.25">1.25x</option>
+              <option value="1.5">1.5x</option>
+              <option value="2">2.0x</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- Progress Timeline & Duration Bar -->
+      <section class="progress-section">
+        <div class="time-stamps">
+          <span id="currentTime">0:00</span>
+          <span id="totalDuration">0:00</span>
+        </div>
+        <div class="progress-bar-container" id="progressBarContainer">
+          <div class="progress-bar-fill" id="progressBarFill"></div>
+          <div class="progress-thumb" id="progressThumb"></div>
+        </div>
+      </section>
+
+      <!-- Audio Controls Bar -->
+      <section class="controls-section">
+        <div class="mode-controls">
+          <button id="shuffleBtn" class="icon-btn-sm" title="Shuffle (Off)">
+            <i class="fa-solid fa-shuffle"></i>
+          </button>
+          <button id="repeatBtn" class="icon-btn-sm" title="Repeat (Off)">
+            <i class="fa-solid fa-repeat"></i>
+          </button>
+        </div>
+
+        <div class="playback-controls">
+          <button id="prevBtn" class="control-btn" title="Previous Track (P / Left Arrow)">
+            <i class="fa-solid fa-backward-step"></i>
+          </button>
+          <button id="playPauseBtn" class="control-btn play-main-btn" title="Play / Pause (Spacebar)">
+            <i class="fa-solid fa-play" id="playIcon"></i>
+          </button>
+          <button id="nextBtn" class="control-btn" title="Next Track (N / Right Arrow)">
+            <i class="fa-solid fa-forward-step"></i>
+          </button>
+        </div>
+
+        <div class="volume-control-wrapper">
+          <button id="muteBtn" class="icon-btn-sm" title="Mute / Unmute (M)">
+            <i class="fa-solid fa-volume-high" id="volumeIcon"></i>
+          </button>
+          <div class="volume-slider-container" id="volumeSliderContainer">
+            <input type="range" id="volumeSlider" min="0" max="100" value="80" class="volume-slider">
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Info -->
+      <footer class="player-footer">
+        <span class="kbd-shortcuts-hint">
+          💡 <strong>Shortcuts</strong>: Space (Play/Pause) | ◄ ► (Seek) | ▲ ▼ (Volume) | N (Next) | P (Prev)
+        </span>
+        <div class="author-tag">
+          Task 4 by <strong>Ashwani Rathore</strong> | CodeAlpha Internship
+        </div>
+      </footer>
+    </div>
+
+    <!-- Playlist Side Drawer -->
+    <aside class="playlist-drawer glass-card" id="playlistDrawer">
+      <div class="playlist-header">
+        <h3><i class="fa-solid fa-list-music"></i> Playlist (<span id="playlistTrackCount">0</span>)</h3>
+        <button id="closePlaylistBtn" class="close-btn" title="Close Drawer">&times;</button>
+      </div>
+
+      <!-- Playlist Search Bar -->
+      <div class="playlist-search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="playlistSearchInput" placeholder="Search song or artist...">
+      </div>
+
+      <div class="playlist-tracks-list" id="playlistTracksList">
+        <!-- Track Items generated via JS -->
+      </div>
+
+      <div class="playlist-footer">
+        <button id="clearCustomTracksBtn" class="clear-btn">
+          <i class="fa-solid fa-arrow-rotate-left"></i> Reset Playlist
+        </button>
+      </div>
+    </aside>
+  </main>
+
+  <!-- Hidden HTML5 Audio Element -->
+  <audio id="mainAudioElement" preload="metadata"></audio>
+
+  <!-- Custom JavaScript -->
+  <script src="script.js"></script>
+</body>
+</html>
