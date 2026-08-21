@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Glassmorphic Calculator</title>
+  <meta name="description" content="A modern, aesthetic, real-time basic calculator built with HTML, CSS, and JavaScript featuring keyboard support, expression history, and sleek glassmorphic UI.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="background-globes">
+    <div class="globe globe-1"></div>
+    <div class="globe globe-2"></div>
+    <div class="globe globe-3"></div>
+  </div>
+
+  <main class="app-container">
+    <!-- Calculator Card -->
+    <div class="calculator-card">
+      <!-- Header / Control bar -->
+      <header class="calculator-header">
+        <div class="app-title">
+          <span class="logo-icon">🧮</span>
+          <h1>Calculator</h1>
+        </div>
+        <div class="header-actions">
+          <button id="themeToggle" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+            <span class="theme-icon">🌙</span>
+          </button>
+          <button id="historyToggle" class="icon-btn" title="Toggle History" aria-label="Toggle History">
+            <span class="history-icon">📜</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Display Screen -->
+      <section class="display-container" aria-label="Calculator Display">
+        <div class="expression-line" id="expressionDisplay" aria-live="polite"></div>
+        <div class="main-display" id="mainDisplay" aria-live="polite">0</div>
+        <div class="preview-line" id="previewDisplay"></div>
+      </section>
+
+      <!-- Keypad -->
+      <section class="keypad" aria-label="Calculator Keypad">
+        <!-- Row 1 -->
+        <button class="btn btn-function" data-action="clear-all" id="btn-AC" title="All Clear (Esc)">AC</button>
+        <button class="btn btn-function" data-action="backspace" id="btn-backspace" title="Backspace (Backspace)">⌫</button>
+        <button class="btn btn-function" data-action="percent" id="btn-percent" title="Percentage (%)">%</button>
+        <button class="btn btn-operator" data-action="operator" data-value="÷" id="btn-divide" title="Divide (/)">÷</button>
+
+        <!-- Row 2 -->
+        <button class="btn btn-number" data-value="7" id="btn-7">7</button>
+        <button class="btn btn-number" data-value="8" id="btn-8">8</button>
+        <button class="btn btn-number" data-value="9" id="btn-9">9</button>
+        <button class="btn btn-operator" data-action="operator" data-value="×" id="btn-multiply" title="Multiply (*)">×</button>
+
+        <!-- Row 3 -->
+        <button class="btn btn-number" data-value="4" id="btn-4">4</button>
+        <button class="btn btn-number" data-value="5" id="btn-5">5</button>
+        <button class="btn btn-number" data-value="6" id="btn-6">6</button>
+        <button class="btn btn-operator" data-action="operator" data-value="-" id="btn-subtract" title="Subtract (-)">-</button>
+
+        <!-- Row 4 -->
+        <button class="btn btn-number" data-value="1" id="btn-1">1</button>
+        <button class="btn btn-number" data-value="2" id="btn-2">2</button>
+        <button class="btn btn-number" data-value="3" id="btn-3">3</button>
+        <button class="btn btn-operator" data-action="operator" data-value="+" id="btn-add" title="Add (+)">+</button>
+
+        <!-- Row 5 -->
+        <button class="btn btn-function" data-action="toggle-sign" id="btn-negate" title="Toggle Positive/Negative (±)">±</button>
+        <button class="btn btn-number" data-value="0" id="btn-0">0</button>
+        <button class="btn btn-number" data-value="." id="btn-decimal">.</button>
+        <button class="btn btn-equals" data-action="calculate" id="btn-equals" title="Calculate (= / Enter)">=</button>
+      </section>
+      
+      <!-- Footer Info -->
+      <footer class="calculator-footer">
+        <span class="kbd-hint">💡 Supports Keyboard Input (Numbers, +, -, *, /, Enter, Backspace, Esc)</span>
+      </footer>
+    </div>
+
+    <!-- History Panel Side Drawer -->
+    <aside class="history-panel" id="historyPanel" aria-label="Calculation History">
+      <div class="history-header">
+        <h2>Calculation History</h2>
+        <button id="closeHistory" class="close-btn" title="Close Panel">&times;</button>
+      </div>
+      <div class="history-list" id="historyList">
+        <p class="no-history">No calculations yet</p>
+      </div>
+      <div class="history-footer">
+        <button id="clearHistoryBtn" class="clear-history-btn">Clear History</button>
+      </div>
+    </aside>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
